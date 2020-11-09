@@ -13,4 +13,14 @@ router.post('/upload', uploader.single("imageUrl"), (req, res, next) => {
     res.json({ image: req.file.path });
 })
 
+router.post('/imageUploadPassImage', (req, res) => {
+  const values = Object.values(req.body)
+     const promises = values.map(image => cloudinary.v2.uploader.upload(image,
+ function(error, result) {console.log(result, error); }));
+
+     Promise
+       .all(promises)
+       .then(results => res.json(results))
+   })
+
 module.exports = router;

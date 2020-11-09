@@ -39,7 +39,7 @@ app.use(
 );
 
 const cors = require('cors')
-app.use(cors())
+app.use(cors({credentials: true, origin: ['http://127.0.0.1:3000']}))
 
 // Middleware Setup
 app.use(logger('dev'));
