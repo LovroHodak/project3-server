@@ -57,6 +57,22 @@ router.delete('/stuffs/:id', (req, res) => {
           })  
 })
 
+router.patch('/stuffs/:id', (req, res) => {
+     let id = req.params.id
+     const {priceStuff, phoneStuff} = req.body;
+     StuffModel.findByIdAndUpdate(id, {$set: {priceStuff: priceStuff, phoneStuff: phoneStuff}})
+           .then((response) => {
+                res.status(200).json(response)
+           })
+           .catch((err) => {
+                console.log(err)
+                res.status(500).json({
+                     error: 'Something went wrong',
+                     message: err
+                })
+           }) 
+})
+
 
 
 module.exports = router;

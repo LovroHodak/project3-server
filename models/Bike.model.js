@@ -21,6 +21,10 @@ let BikeSchema = new mongoose.Schema({
     },
     city: {
       type: String
+    },
+    ownerId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User'
     }
 
 
