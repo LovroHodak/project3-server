@@ -33,7 +33,6 @@ app.use(
       mongooseConnection: mongoose.connection,
       //time to live (in seconds)
       ttl: 60 * 60 * 24,
-      autoRemove: 'disabled',
     }),
   })
 );
@@ -70,11 +69,13 @@ app.locals.title = 'Express - Generated with IronGenerator';
 
 
 //Register routes
-const bikeRoutes = require('./routes/bike.routes');
-app.use('/api', bikeRoutes);
+
 
 const authRoutes = require('./routes/auth.routes');
 app.use('/api', authRoutes);
+
+const bikeRoutes = require('./routes/bike.routes');
+app.use('/api', bikeRoutes);
 
 const stuffRoutes = require('./routes/stuff.routes');
 app.use('/api', stuffRoutes);

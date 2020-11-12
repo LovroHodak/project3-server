@@ -4,7 +4,10 @@ const { isLoggedIn } = require('../helpers/auth-helper');
 
 let BikeModel = require('../models/Bike.model')
 
+
+
 router.get('/bikes', (req, res) => {
+     console.log('THISSSSSS', req.session)
      BikeModel.find()
           .then((bikes) => {
                res.status(200).json(bikes)
@@ -17,19 +20,22 @@ router.get('/bikes', (req, res) => {
           })         
 })
 
-router.post('/create', (req, res) => {  
+router.post('/create',  (req, res) => {  
     const {price, size, bikeType, image, phone, city} = req.body;
-    const ownerId = req.session.loggedInUser._id
-    //const ownerId = req.session.loggedInUser._id
+    
+    
     console.log('This is req.body!!!', req.body)
     console.log('This is req.session!!!', req.session)
+    console.log('req.session.loggedInUser._id' , req.session.loggedInUser._id)
+
+    const ownerId = req.session.loggedInUser._id
     BikeModel.create({price: price, size: size, bikeType: bikeType, image: image, phone: phone, city: city, ownerId: ownerId})
           .then((response) => {
                res.status(200).json(response)
           })
           .catch((err) => {
                res.status(500).json({
-                    error: 'Something went wrong',
+                    errorMessagge: 'Something went wrong',
                     message: err
                })
           })  

@@ -11,7 +11,7 @@ const { isLoggedIn } = require('../helpers/auth-helper'); // middleware to check
 router.post('/signup', (req, res) => {
     const {username, email, password } = req.body;
     console.log(username, email, password);
-    /*
+    
     if (!username || !email || !password) {
         res.status(500)
           .json({
@@ -37,7 +37,7 @@ router.post('/signup', (req, res) => {
           });
         return;  
     }
-    */
+    
     bcrypt.genSalt(12)
       .then((salt) => {
         console.log('Salt: ', salt);
@@ -47,7 +47,8 @@ router.post('/signup', (req, res) => {
               .then((user) => {
                 user.passwordHash = "***";
                 req.session.loggedInUser = user;
-                console.log(req.session)
+                console.log('req-sess', req.session)
+                console.log('req-sess-logg' ,req.session.loggedInUser)
                 res.status(200).json(user);
               })
               .catch((err) => {
@@ -61,7 +62,7 @@ router.post('/signup', (req, res) => {
                 else {
                   res.status(500)
                   .json({
-                    errorMessage: 'Something went wrong! Go to sleep!'
+                    errorMessage: 'Please enter username, email and password'
                   });
                   return; 
                 }
@@ -73,10 +74,10 @@ router.post('/signup', (req, res) => {
  
 router.post('/signin', (req, res) => {
     const {email, password } = req.body;
-    /*
+   
     if ( !email || !password) {
         res.status(500).json({
-            error: 'Please enter Username. email and password',
+            error: 'Please enter email and password',
        })
       return;  
     }
@@ -87,7 +88,7 @@ router.post('/signin', (req, res) => {
         })
         return;  
     }
-    */
+    
     // Find if the user exists in the database 
     UserModel.findOne({email})
       .then((userData) => {
@@ -99,7 +100,7 @@ router.post('/signin', (req, res) => {
                   // req.session is the special object that is available to you
                   userData.passwordHash = "***";
                   req.session.loggedInUser = userData;
-                  console.log('Signin', req.session)
+                  console.log('Signin', req.session.loggedInUser)
                   res.status(200).json(userData)
                 }
                 //if passwords do not match
@@ -122,7 +123,7 @@ router.post('/signin', (req, res) => {
       //throw an error if the user does not exists 
       .catch((err) => {
         res.status(500).json({
-            error: 'EEEmail format not correct',
+            error: 'Email and password doesn/t match.',
             message: err
         })
         return;  

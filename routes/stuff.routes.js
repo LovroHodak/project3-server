@@ -1,5 +1,6 @@
 const express = require('express')
 const router = express.Router()
+const { isLoggedIn } = require('../helpers/auth-helper');
 
 let StuffModel = require('../models/Stuff.model')
 
@@ -19,7 +20,9 @@ router.get('/stuffs', (req, res) => {
 router.post('/createS', (req, res) => {  
     const {categoryStuff, nameStuff, priceStuff, phoneStuff, cityStuff, image} = req.body;
     console.log(req.body)
-    StuffModel.create({categoryStuff: categoryStuff, nameStuff: nameStuff, priceStuff: priceStuff, phoneStuff: phoneStuff, cityStuff: cityStuff, image: image})
+    const ownerId = req.session.loggedInUser._id
+
+    StuffModel.create({categoryStuff: categoryStuff, nameStuff: nameStuff, priceStuff: priceStuff, phoneStuff: phoneStuff, cityStuff: cityStuff, image: image, ownerId: ownerId})
           .then((response) => {
                res.status(200).json(response)
           })
@@ -73,6 +76,9 @@ router.patch('/stuffs/:id', (req, res) => {
            }) 
 })
 
+router.get("/user", isLoggedIn, (req, res, next) => {
+     res.status(200).json(req.session.loggedInUser);
+});
 
 
 module.exports = router;

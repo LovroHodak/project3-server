@@ -19,6 +19,10 @@ let StuffSchema = new mongoose.Schema({
     image: {
       type: String,
       default: "https://labs.paperpixel.net/facebook-cover-generator/img/profile_dummy.jpg"
+    },
+    ownerId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User'
     }
 })
 

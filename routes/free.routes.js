@@ -1,5 +1,6 @@
 const express = require('express')
 const router = express.Router()
+const { isLoggedIn } = require('../helpers/auth-helper');
 
 let FreeModel = require('../models/Free.model')
 
@@ -18,8 +19,9 @@ router.get('/frees', (req, res) => {
 
 router.post('/createF', (req, res) => {  
     const {nameFree, phoneFree, cityFree, image} = req.body;
+    const ownerId = req.session.loggedInUser._id
     console.log(req.body)
-    FreeModel.create({nameFree: nameFree, phoneFree: phoneFree, cityFree: cityFree, image: image})
+    FreeModel.create({nameFree: nameFree, phoneFree: phoneFree, cityFree: cityFree, image: image, ownerId: ownerId})
           .then((response) => {
                res.status(200).json(response)
           })
@@ -57,6 +59,9 @@ router.delete('/frees/:id', (req, res) => {
           })  
 })
 
+router.get("/user", isLoggedIn, (req, res, next) => {
+     res.status(200).json(req.session.loggedInUser);
+});
 
 
 module.exports = router;
